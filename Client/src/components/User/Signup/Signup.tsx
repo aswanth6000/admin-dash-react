@@ -1,5 +1,54 @@
+import axios from '../../../axios';
+import { useState } from 'react';
+
+interface FormValues {
+  fullname : string;
+  email: string;
+  password: string;
+  confirmpassword: string
+
+
+}
 
 export default function Signup() {
+  const [value, setValue] = useState<FormValues>({
+    fullname:'',
+    email: '',
+    password: '',
+    confirmpassword : '',
+
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue({
+      ...value,
+      [e.target.name]: e.target.value,
+    });
+  };
+  
+  console.log(value);
+  
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try{
+      const response = await axios.post("/signup", JSON.stringify(value), {
+        headers : {
+          'Content-Type' : 'application/json',
+        },
+      })
+      if (response.status === 200) {
+        console.log('Login successful');
+      } else {
+         console.log('Login failed');
+      }
+    }
+    catch(err){
+      console.log(err);
+      
+    }
+  };
+
   return (
     <div>
       <section className="bg-gray-50 dark:bg-gray-900">
@@ -9,7 +58,7 @@ export default function Signup() {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Create new account
               </h1>
-              <form className="space-y-4 md:space-y-6" autoComplete="off">
+              <form className="space-y-4 md:space-y-6" autoComplete="off" onSubmit={handleSignup}>
                 <div>
                   <label
                     htmlFor="fullname"
@@ -21,6 +70,8 @@ export default function Signup() {
                     type="text"
                     name="fullname"
                     id="fullname"
+                    onChange={handleChange}
+                    value={value.fullname}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none "
                     placeholder="Full name"
                     required
@@ -36,6 +87,8 @@ export default function Signup() {
                   <input
                     type="email"
                     name="email"
+                    onChange={handleChange}
+                    value={value.email}
                     id="email"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none "
                     placeholder="name@company.com"
@@ -54,6 +107,8 @@ export default function Signup() {
                     type="password"
                     name="password"
                     id="password"
+                    onChange={handleChange}
+                    value={value.password}
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none"
                     required
@@ -69,6 +124,8 @@ export default function Signup() {
                   <input
                     type="password"
                     name="confirmpassword"
+                    onChange={handleChange}
+                    value={value.confirmpassword}
                     id="confirmpassword"
                     placeholder="••••••••"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none"
