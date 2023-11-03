@@ -8,6 +8,7 @@ exports.loginController = async(req, res) =>{
 }
 
 exports.signupController = async(req, res)=>{
+    console.log(req.body);
     const {fullname, email, password} = req.body
     try{
         const user = await User.findOne({email : email})
