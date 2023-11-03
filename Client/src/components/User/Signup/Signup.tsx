@@ -1,6 +1,6 @@
 import axios from '../../../axios';
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 interface FormValues {
   fullname : string;
   email: string;
@@ -18,6 +18,8 @@ export default function Signup() {
     confirmpassword : '',
 
   });
+
+  const nvaigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({
@@ -43,14 +45,21 @@ const [error, setError] = useState<string>('');
         },
       })
       if (response.status === 200) {
+        nvaigate("/")
         console.log('Login successful');
       } else {
          console.log('Login failed');
       }
     }
-    catch(err){
-      console.log(err);
-      
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    catch(error:any){
+      if (
+				error.response &&
+				error.response.status >= 400 &&
+				error.response.status <= 500
+			) {
+				setError(error.response.data.message);
+			}
     }
   };
 

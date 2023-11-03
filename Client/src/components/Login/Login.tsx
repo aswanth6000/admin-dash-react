@@ -1,5 +1,6 @@
-import axios from 'axios';
+import axios from '../../axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface FormValues {
   email: string;
@@ -11,7 +12,7 @@ export default function Login() {
     email: '',
     password: '',
   });
-
+  const [error, setError] = useState<string>('');
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({
       ...value,
@@ -19,26 +20,33 @@ export default function Login() {
     });
   };
   console.log(value);
+  const navigate = useNavigate();
   
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try{
-      const response = await axios.post('/login', {
-        method : 'POST',
+      const response = await axios.post('/login',value, {
         headers : {
           'Content-Type' : 'application/json',
         },
-        body: JSON.stringify(value)
       })
       if (response.status === 200) {
         console.log('Login successful');
+        navigate('/userhome')
       } else {
          console.log('Login failed');
       }
     }
-    catch(err){
-      console.log(err);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    catch(error:any){
+      if (
+				error.response &&
+				error.response.status >= 400 &&
+				error.response.status <= 500
+			) {
+				setError(error.response.data.message);
+			}
       
     }
   };
@@ -94,6 +102,7 @@ export default function Login() {
                     Forgot password?
                   </a>
                 </div>
+                <p className='block mb-2 text-sm font-medium text-red-600 dark:text-red-600 text-center' >{error? error : ''}</p>
                 <button
                   type="submit"
                   className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
