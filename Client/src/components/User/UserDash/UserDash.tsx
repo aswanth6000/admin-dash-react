@@ -1,12 +1,23 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 export default function UserDash() {
-  const navigate = useNavigate()
+
+  
+const navigate = useNavigate()
 console.log("kkkkkkkkk",localStorage.getItem('token'));
 const handleLogout = () =>{
   localStorage.removeItem('token');
   navigate('/')
 }
+useEffect(()=>{
+  const user  = localStorage.getItem('token');
+  console.log(user);
+  
+  
+
+}, [])
   
   return (
     <div>

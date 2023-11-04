@@ -37,6 +37,7 @@ export default function Login() {
       if (response.status === 200) {
         console.log('Login successful');
         navigate('/userhome')
+        window.location.reload();
       } else {
          console.log('Login failed');
       }
