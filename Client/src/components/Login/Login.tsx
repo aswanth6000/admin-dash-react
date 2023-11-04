@@ -31,6 +31,9 @@ export default function Login() {
           'Content-Type' : 'application/json',
         },
       })
+      localStorage.setItem("token", response.data.data);
+      console.log("eeeeeeee",response.data.data);
+      
       if (response.status === 200) {
         console.log('Login successful');
         navigate('/userhome')
