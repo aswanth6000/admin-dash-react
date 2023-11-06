@@ -3,6 +3,7 @@ import Login from "./components/Login/Login";
 import Signup from "./components/User/Signup";
 import UserDash from "./components/User/UserDash";
 import UserForm from "./components/User/userForm";
+import { useSelector } from "react-redux";
 
 import { useEffect, useState } from "react";
 function App() {
@@ -14,6 +15,9 @@ const fetchData = () =>{
 }
 fetchData()
 },[user])
+
+const userd = useSelector((state) => state.user); // Assuming 'user' is the name of your reducer
+  console.log('User data from Redux store:', userd);
   
   return (
     <>

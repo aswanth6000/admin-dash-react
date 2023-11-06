@@ -1,6 +1,8 @@
 import axios from '../../axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setLogin } from '../../redux/userSlice';
 
 interface FormValues {
   email: string;
@@ -19,8 +21,8 @@ export default function Login() {
       [e.target.name]: e.target.value,
     });
   };
-  console.log(value);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -32,6 +34,10 @@ export default function Login() {
         },
       })
       const dataString = JSON.stringify(response.data);
+      dispatch(setLogin({
+        user: 'iiiii', // Pass the response.data directly
+        token: response.data.token,
+      }))
       localStorage.setItem("token", dataString);
       
       if (response.status === 200) {
