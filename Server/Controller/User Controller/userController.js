@@ -1,7 +1,12 @@
 const {User} = require('../../Model/User')
 const bcrypt = require('bcrypt')
 const express = require('express')
+const cloudinary = require('../../Config/cloudinary')
 const router = express.Router()
+const multer = require('multer')
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 
 
@@ -54,4 +59,20 @@ exports.login = async (req, res)=>{
 	} catch (error) {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
+}
+
+exports.updateProfile = async (req, res)=>{
+    const userId = req.params.userId;
+    console.log(userId);
+    const updatedData = req.body;
+    const folderName = 'admin-user-react';
+    console.log("ssssssss",updatedData);
+    if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path,  { public_id: `${folderName}/${req.file.originalname}`});
+        updatedData.profilePic = result.secure_url;
+        console.log(updatedData);
+      }
+      const user = await User.findByIdAndUpdate(userId, updatedData, { new: true });
+      
+      res.json(user);
 }

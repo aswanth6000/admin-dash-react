@@ -10,6 +10,7 @@ interface UserData {
       fullname: string;
       email : string;
       createdAt : string
+      profilePic : string
 }
 
 export default function UserDash() {
@@ -24,16 +25,20 @@ const handleLogout = () =>{
 const [name, setName] = useState<string>('')
 const [email, setEmail] = useState<string>('')
 const [date, setDate] = useState<string>('');
+const [profilePic, setProfilePic] = useState('')
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const userData: UserData| null = useSelector((state : any) => state.user.user ); 
 
 useEffect(()=>{
       if (userData) {
+        console.log(userData);
+        
       setName(userData.fullname);
       setEmail(userData.email)
       const createdAtDate = new Date(userData.createdAt);
     setDate(createdAtDate.toDateString());
+    setProfilePic(userData.profilePic)
     } else {
       setName('');
     }
@@ -53,7 +58,7 @@ useEffect(()=>{
         </span>
     </div>
     <div className="mt-6 w-fit mx-auto">
-        <img src={profile} className="rounded-full w-28 " alt="profile picture" />
+        <img src={profilePic ? profilePic : profile} className="rounded-full w-28 " alt="profile picture" />
     </div>
 
     <div className="mt-8 ">

@@ -33,7 +33,12 @@ export const userSlice = createSlice({
       state.token = null;
     },
     updateProfile: (state, action: PayloadAction<User[]>) => {
-      state.allusers = action.payload;
+      if (state.user) {
+        state.user = {
+          ...state.user,
+          ...action.payload,
+        };
+      }
     },
     getUsers: (state, action: PayloadAction<{ user: User[] }>) => {
       state.allusers = action.payload.user;
