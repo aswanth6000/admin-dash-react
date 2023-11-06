@@ -35,8 +35,8 @@ export default function Login() {
       })
       const dataString = JSON.stringify(response.data);
       dispatch(setLogin({
-        user: 'iiiii', // Pass the response.data directly
-        token: response.data.token,
+        user: response.data.data.user,
+        token: response.data.data.token,
       }))
       localStorage.setItem("token", dataString);
       

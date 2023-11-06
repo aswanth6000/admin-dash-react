@@ -8,16 +8,15 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 function App() {
   const [user, setUser] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+const token = useSelector((state : any) => state.user.token ); 
 useEffect(()=>{
 const fetchData = () =>{
-  const userd: string | null  = localStorage.getItem('token')
+  const userd: string | null  = token
   setUser(userd)
 }
 fetchData()
-},[user])
-
-const userd = useSelector((state) => state.user); // Assuming 'user' is the name of your reducer
-  console.log('User data from Redux store:', userd);
+},[token])
   
   return (
     <>

@@ -1,41 +1,41 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setLogout } from "../../redux/userSlice";
 
 interface UserData {
-  data: {
-    user: {
       fullname: string;
       email : string;
       createdAt : string
-    };
-  };
 }
 
 export default function UserDash() {
 
-  
+const dispatch = useDispatch()
 const navigate = useNavigate()
 
 const handleLogout = () =>{
-  localStorage.removeItem('token');
+  dispatch(setLogout())
   navigate('/')
 }
 const [name, setName] = useState<string>('')
 const [email, setEmail] = useState<string>('')
 const [date, setDate] = useState<string>('');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const userData: UserData| null = useSelector((state : any) => state.user.user ); 
+
 useEffect(()=>{
-  const t: string | null = localStorage.getItem('token')
-      if (t) {
-      const parsedData: UserData = JSON.parse(t);
-      setName(parsedData.data.user.fullname);
-      setEmail(parsedData.data.user.email)
-      const createdAtDate = new Date(parsedData.data.user.createdAt);
+      if (userData) {
+      setName(userData.fullname);
+      setEmail(userData.email)
+      const createdAtDate = new Date(userData.createdAt);
     setDate(createdAtDate.toDateString());
     } else {
       setName('');
     }
-}, [])
+}, [userData])
   
   return (
     <div>
