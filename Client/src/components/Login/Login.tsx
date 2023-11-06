@@ -31,8 +31,8 @@ export default function Login() {
           'Content-Type' : 'application/json',
         },
       })
-      localStorage.setItem("token", response.data.data);
-      console.log("eeeeeeee",response.data.data);
+      const dataString = JSON.stringify(response.data);
+      localStorage.setItem("token", dataString);
       
       if (response.status === 200) {
         console.log('Login successful');

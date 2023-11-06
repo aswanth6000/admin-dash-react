@@ -1,22 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+interface UserData {
+  data: {
+    user: {
+      fullname: string;
+      email : string;
+    };
+  };
+}
 
 export default function UserDash() {
 
   
 const navigate = useNavigate()
-console.log("kkkkkkkkk",localStorage.getItem('token'));
+
 const handleLogout = () =>{
   localStorage.removeItem('token');
   navigate('/')
 }
+const [name, setName] = useState<string>('')
 useEffect(()=>{
-  const user  = localStorage.getItem('token');
-  console.log(user);
-  
-  
-
+  const t: string | null = localStorage.getItem('token')
+      if (t) {
+      const parsedData: UserData = JSON.parse(t);
+      console.log('jjjjjjjjjjj', parsedData.data.user.fullname);
+      setName(parsedData.data.user.fullname);
+    } else {
+      setName('');
+    }
 }, [])
   
   return (
@@ -37,7 +49,7 @@ useEffect(()=>{
     </div>
 
     <div className="mt-8 ">
-        <h2 className="text-white font-bold text-2xl tracking-wide">Jonathan <br/> Smith</h2>
+        <h2 className="text-white font-bold text-2xl tracking-wide">{name}</h2>
     </div>
     <p className="text-emerald-400 font-semibold mt-2.5" >
         Active
