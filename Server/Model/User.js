@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema({
         default: new Date(),
       },
       profilePic : {
-        type: String
+        type: String,
+        default: 'https://res.cloudinary.com/dihrwghx2/image/upload/v1699291554/admin-user-react/default-pic_rkk3gl.jpg'
       }
 })
 

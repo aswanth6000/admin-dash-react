@@ -44,11 +44,11 @@ const [error, setError] = useState<string>('');
           'Content-Type': 'application/json',
         },
       })
-      if (response.status === 200) {
+      if (response.status > 200) {
         nvaigate("/")
-        console.log('Login successful');
+        console.log('Signup successful');
       } else {
-         console.log('Login failed');
+         console.log('Signup failed');
       }
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

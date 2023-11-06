@@ -1,37 +1,42 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux";
-import profile from '/default-pic.jpg'
 import axios from "../../axios";
 import { useDispatch } from "react-redux";
 import { updateProfile } from "../../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 
 interface UserData {
+    _id: string;
     fullname: string;
     email : string;
-    createdAt : string
+    createdAt : string;
+    profilePic: string;
 }
 interface FormValues {
   fullname : string;
-  email: string;
+  emaile: string;
 }
 
 export default function UserForm() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [pic, setPic] = useState('');
-    const [uploadPic, setUploadPic] = useState('')
+    const[upName, setUpName] = useState('');
+    const [upEmail,setUpEmail] = useState('')
+    const [uploadPic, setUploadPic] = useState<File | null>(null); 
+    const [profile, setProfile] = useState('')
     const [isLoading, setIsLoading] = useState(false); 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const user: UserData | null = useSelector((state: any) => state.user.user);
-    const userId = user._id
+    const userId = user?._id || '';
     
     useEffect(()=>{
      if(user){
         setName(user.fullname) ;
         setEmail(user.email)
+        setProfile(user.profilePic)
      } 
     }, [user]);
     const handleFileChange = (event : React.ChangeEvent<HTMLInputElement>) =>{
@@ -44,13 +49,19 @@ export default function UserForm() {
 
     const [value, setValue] = useState<FormValues>({
       fullname:'',
-      email: '',
+      emaile: '',
     });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      console.log('Changing name:', e.target.value); 
       setValue({
         ...value,
         [e.target.name]: e.target.value,
       });
+      const{fullname, emaile} = value
+      setUpName(fullname ? fullname : name);
+      setUpEmail(emaile ? emaile : email )
+
+      
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -58,10 +69,10 @@ export default function UserForm() {
       setIsLoading(true);
       const formData = new FormData();
       if (pic) {
-        formData.append('profilePic', uploadPic);
+        formData.append('profilePic', uploadPic ? uploadPic : '');
       }
-      formData.append('fullname', name);
-      formData.append('email', email);
+      formData.append('fullname', upName);
+      formData.append('email', upEmail);
     
       for (const pair of formData.entries()) {
         console.log(pair[0] + ', ' + pair[1]);
@@ -107,7 +118,7 @@ export default function UserForm() {
                     type="text"
                     name="fullname"
                     id="fullname"
-                    value={name ? name : ''}
+                    defaultValue={name}
                     onChange={handleChange}
                     
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none"
@@ -124,9 +135,10 @@ export default function UserForm() {
                   </label>
                   <input
                     type="email"
-                    name="email"
+                    name="emaile"
                     id="email"
-                    value={email ? email : ''}
+                    defaultValue={email}
+                    onChange={handleChange}
                     
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 focus:outline-none"
                     placeholder="name@company.com"
