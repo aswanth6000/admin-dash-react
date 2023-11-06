@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../../redux/userSlice";
+import profile from '/default-pic.jpg'
 
 interface UserData {
       fullname: string;
@@ -23,6 +24,7 @@ const handleLogout = () =>{
 const [name, setName] = useState<string>('')
 const [email, setEmail] = useState<string>('')
 const [date, setDate] = useState<string>('');
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const userData: UserData| null = useSelector((state : any) => state.user.user ); 
 
@@ -51,7 +53,7 @@ useEffect(()=>{
         </span>
     </div>
     <div className="mt-6 w-fit mx-auto">
-        <img src="https://api.lorem.space/image/face?w=120&h=120&hash=bart89fe" className="rounded-full w-28 " alt="profile picture" />
+        <img src={profile} className="rounded-full w-28 " alt="profile picture" />
     </div>
 
     <div className="mt-8 ">
