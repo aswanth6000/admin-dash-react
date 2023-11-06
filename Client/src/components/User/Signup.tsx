@@ -155,7 +155,7 @@ const [error, setError] = useState<string>('');
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already have an account ?{' '}
-                  <a href="#" className="font-medium text-blue-600 hover:underline dark:text-blue-500">
+                  <a href="/" className="font-medium text-blue-600 hover:underline dark:text-blue-500">
                     Sign In
                   </a>
                 </p>

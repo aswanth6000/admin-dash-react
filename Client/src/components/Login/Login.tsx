@@ -107,11 +107,7 @@ export default function Login() {
                     required
                   />
                 </div>
-                <div className="flex items-center justify-end">
-                  <a href="#" className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
-                    Forgot password?
-                  </a>
-                </div>
+
                 <p className='block mb-2 text-sm font-medium text-red-600 dark:text-red-600 text-center' >{error? error : ''}</p>
                 <button
                   type="submit"
