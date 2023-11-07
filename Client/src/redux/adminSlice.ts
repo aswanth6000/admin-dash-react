@@ -24,12 +24,15 @@ export const adminSlice = createSlice({
     adminLogin: (state, action: PayloadAction<{ adminEmail: string | null }>) => {
       state.adminEmail = action.payload.adminEmail;
     },
-    
     setAdminUsers: (state, action: PayloadAction<{ users: User[] }>) => {
       state.allusers = action.payload.users;
     },
+    setAdminLogout : (state)=>{
+      state.adminEmail = null;
+      state.allusers = [];
+    }
   },
 });
 
-export const { adminLogin, setAdminUsers } = adminSlice.actions;
+export const { adminLogin, setAdminUsers, setAdminLogout } = adminSlice.actions;
 export default adminSlice.reducer;

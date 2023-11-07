@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Signup from "./components/User/Signup";
@@ -9,15 +10,16 @@ import AdminDash from "./components/Admin/AdminDash/AdminDash";
 import { useEffect, useState } from "react";
 function App() {
   const [user, setUser] = useState<string | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const token = useSelector((state : any) => state.user.token ); 
+const admin  = useSelector((state:any)=>state.adminEmail)
 useEffect(()=>{
 const fetchData = () =>{
   const userd: string | null  = token
-  setUser(userd)
+  const admind: string | null  = admin
+  setUser(userd ? userd : admind)
 }
 fetchData()
-},[token])
+},[token, admin])
   
   return (
     <>
@@ -25,7 +27,7 @@ fetchData()
     <Routes>
       <Route path="/" element={<Login/>}></Route>
       <Route path="/signup" element={<Signup/>}></Route>
-      <Route path="/adminhome" element={<AdminDash/>}></Route>
+      {user &&<Route path="/adminhome" element={<AdminDash/>}></Route>}
       {user &&<Route path="/userhome" element={ <UserDash/>}></Route>}
       {user &&<Route path="/userform" element={ <UserForm/>}></Route>}
     </Routes>

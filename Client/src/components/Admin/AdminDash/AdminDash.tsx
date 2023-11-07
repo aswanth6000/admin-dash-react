@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setAdminLogout } from "../../../redux/adminSlice";
+import { useNavigate } from "react-router-dom";
+
+
 export default function AdminDash() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const allUsers = useSelector((state : any) => state.admin.allusers);
@@ -9,6 +14,13 @@ export default function AdminDash() {
     }
 
   })
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  
+  const handleLogout = () =>{
+    dispatch(setAdminLogout())
+    navigate('/')
+  }
   
   return (
     <div>
@@ -17,13 +29,12 @@ export default function AdminDash() {
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
     <div className="flex items-center justify-between pb-4 bg-white dark:bg-gray-900">
         <div>
-            <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction" className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                <span className="sr-only">Action button</span>
-                Action
-                <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
-            </button>
+        <button
+    onClick={handleLogout}
+      className="w-full mt-3 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+    >
+    Logout
+    </button>
             <div id="dropdownAction" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
                     <li>
@@ -73,17 +84,18 @@ export default function AdminDash() {
             </tr>
         </thead>
         <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+          {allUsers.map((user : any)=>(
+            <tr key={user._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td className="w-4 p-1">
                     <div className="flex items-center">
                         <label htmlFor="checkbox-table-search-1" className="sr-only">checkbox</label>
                     </div>
                 </td>
                 <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    <img className="w-10 h-10 rounded-full" src="/docs/images/people/profile-picture-1.jpg" alt="Jese image"/>
+                    <img className="w-10 h-10 rounded-full" src={user.profilePic} alt="Jese image"/>
                     <div className="pl-3">
-                        <div className="text-base font-semibold">Neil Sims</div>
-                        <div className="font-normal text-gray-500">neil.sims@flowbite.com</div>
+                        <div className="text-base font-semibold">{user.fullname}</div>
+                        <div className="font-normal text-gray-500">{user.email}</div>
                     </div>  
                 </th>
                 <td className="px-6 py-4">
@@ -95,9 +107,10 @@ export default function AdminDash() {
                     </div>
                 </td>
                 <td className="px-6 py-4">
-                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                    <a href="" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
                 </td>
             </tr>
+))}
  
         </tbody>
     </table>
