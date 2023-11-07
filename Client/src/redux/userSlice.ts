@@ -5,13 +5,14 @@ interface User {
   id: string;
   fullname: string;
   email: string;
+  profilePic : string;
   // Add other fields as needed
 }
 
 interface UserState {
   user: User | null;
   token: string | null;
-  allusers: User[]; // Use the User type for the allusers array
+  allusers: User[]; 
 }
 
 const initialState: UserState = {
@@ -40,11 +41,8 @@ export const userSlice = createSlice({
         };
       }
     },
-    getUsers: (state, action: PayloadAction<{ user: User[] }>) => {
-      state.allusers = action.payload.user;
-    },
   },
 });
 
-export const { setLogin, setLogout, updateProfile, getUsers } = userSlice.actions;
+export const { setLogin, setLogout, updateProfile } = userSlice.actions;
 export default userSlice.reducer;

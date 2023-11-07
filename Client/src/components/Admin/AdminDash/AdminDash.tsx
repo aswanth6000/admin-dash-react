@@ -1,5 +1,15 @@
-
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 export default function AdminDash() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const allUsers = useSelector((state : any) => state.admin.allusers);
+  useEffect(()=>{
+    if(allUsers){
+      console.log('allusers',allUsers);
+    }
+
+  })
+  
   return (
     <div>
       <section className="bg-gray-50 dark:bg-gray-900">

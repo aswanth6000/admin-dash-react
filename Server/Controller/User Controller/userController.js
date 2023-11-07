@@ -40,8 +40,10 @@ exports.login = async (req, res)=>{
     adminPass = process.env.ADMIN_PASSWORD
     try {
         if(email === adminEmail && password === adminPass){
+            const users = await User.find()
             const data = {
-                adminEmail
+                adminEmail,
+                users
             }
             res.status(201).send({data, message :"Admin login successfully"})
         }else{

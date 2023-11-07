@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../../redux/userSlice';
 import { adminLogin } from '../../redux/adminSlice';
+import { setAdminUsers } from '../../redux/adminSlice';
 
 interface FormValues {
   email: string;
@@ -46,10 +47,13 @@ export default function Login() {
         navigate('/userhome')
         window.location.reload();
       } else if(response.status === 201) {
-        console.log(response.data);
+        console.log('log:',response.data);
         dispatch(adminLogin({
           adminEmail: response.data.data.adminEmail,
         }));
+        dispatch(setAdminUsers({
+          users : response.data.data.users
+        }))
         console.log('Admin login successful');
         navigate('/adminhome')
       }else{

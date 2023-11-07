@@ -31,7 +31,7 @@ const userData: UserData| null = useSelector((state : any) => state.user.user );
 
 useEffect(()=>{
       if (userData) {
-        console.log(userData);
+        console.log('log:',userData);
         
       setName(userData.fullname);
       setEmail(userData.email)

@@ -12,17 +12,27 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import userReducer from "./userSlice"
+import adminReducer from './adminSlice'
 
 const persistConfig = {
     key: 'root',
     version: 1,
     storage,
 }
+const adminPersistConfig = {
+    key: 'admin',
+    version: 1,
+    storage,
+  };
 
 const persistedReducer = persistReducer(persistConfig, userReducer)
+const persistedAdminReducer = persistReducer(adminPersistConfig, adminReducer);
 
 export const store = configureStore({
-    reducer: { user: persistedReducer },
+    reducer:  {
+        user: persistedReducer,
+        admin: persistedAdminReducer, 
+      },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
@@ -30,5 +40,9 @@ export const store = configureStore({
             },
         }),
 })
+
+
+
+
 
 export const persistor = persistStore(store);
