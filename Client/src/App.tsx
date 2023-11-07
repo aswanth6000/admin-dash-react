@@ -4,6 +4,7 @@ import Signup from "./components/User/Signup";
 import UserDash from "./components/User/UserDash";
 import UserForm from "./components/User/userForm";
 import { useSelector } from "react-redux";
+import AdminDash from "./components/Admin/AdminDash/AdminDash";
 
 import { useEffect, useState } from "react";
 function App() {
@@ -24,6 +25,7 @@ fetchData()
     <Routes>
       <Route path="/" element={<Login/>}></Route>
       <Route path="/signup" element={<Signup/>}></Route>
+      <Route path="/adminhome" element={<AdminDash/>}></Route>
       {user &&<Route path="/userhome" element={ <UserDash/>}></Route>}
       {user &&<Route path="/userform" element={ <UserForm/>}></Route>}
     </Routes>

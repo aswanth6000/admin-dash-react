@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../../redux/userSlice";
-import profile from '/default-pic.jpg'
 
 interface UserData {
       fullname: string;
@@ -58,7 +57,7 @@ useEffect(()=>{
         </span>
     </div>
     <div className="mt-6 w-fit mx-auto">
-        <img src={profilePic ? profilePic : profile} className="rounded-full w-28 " alt="profile picture" />
+        <img src={profilePic} className="rounded-full w-28 " alt="profile picture" />
     </div>
 
     <div className="mt-8 ">

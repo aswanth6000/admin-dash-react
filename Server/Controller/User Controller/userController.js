@@ -4,6 +4,7 @@ const express = require('express')
 const cloudinary = require('../../Config/cloudinary')
 const router = express.Router()
 const multer = require('multer')
+require('dotenv').config()
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -35,9 +36,16 @@ exports.signupController = async(req, res)=>{
 
 exports.login = async (req, res)=>{
     const {email, password} = req.body;
+    adminEmail = process.env.ADMIN_EMAIL;
+    adminPass = process.env.ADMIN_PASSWORD
     try {
-
-		const user = await User.findOne({ email: email });
+        if(email === adminEmail && password === adminPass){
+            const data = {
+                adminEmail
+            }
+            res.status(201).send({data, message :"Admin login successfully"})
+        }else{
+            const user = await User.findOne({ email: email });
 		if (!user)
 			return res.status(401).send({ message: "User not found" });
 
@@ -46,19 +54,20 @@ exports.login = async (req, res)=>{
 			user.password
 		);
 		if (!validPassword)
-			return res.status(401).send({ message: "Invalid Password" });
-
-		const token = user.generateAuthToken();
-        const data = {
-            token,
-            user
-        }
-        console.log(data);
-		res.status(200).send({ data, message: "logged in successfully" });
-
-	} catch (error) {
-		res.status(500).send({ message: "Internal Server Error" });
-	}
+        return res.status(401).send({ message: "Invalid Password" });
+    
+    const token = user.generateAuthToken();
+    const data = {
+        token,
+        user
+    }
+    console.log(data);
+    res.status(200).send({ data, message: "logged in successfully" });
+    
+}
+} catch (error) {
+    res.status(500).send({ message: "Internal Server Error" });
+}
 }
 
 exports.updateProfile = async (req, res)=>{

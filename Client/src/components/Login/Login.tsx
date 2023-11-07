@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../../redux/userSlice';
+import { adminLogin } from '../../redux/adminSlice';
 
 interface FormValues {
   email: string;
@@ -33,19 +34,26 @@ export default function Login() {
           'Content-Type' : 'application/json',
         },
       })
-      const dataString = JSON.stringify(response.data);
+
+     
+      
+      if (response.status === 200) {
       dispatch(setLogin({
         user: response.data.data.user,
         token: response.data.data.token,
       }))
-      localStorage.setItem("token", dataString);
-      
-      if (response.status === 200) {
         console.log('Login successful');
         navigate('/userhome')
         window.location.reload();
-      } else {
-         console.log('Login failed');
+      } else if(response.status === 201) {
+        console.log(response.data);
+        dispatch(adminLogin({
+          adminEmail: response.data.data.adminEmail,
+        }));
+        console.log('Admin login successful');
+        navigate('/adminhome')
+      }else{
+        console.log('Login failed');
       }
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
