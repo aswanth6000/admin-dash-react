@@ -105,3 +105,13 @@ exports.updateProfile = async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   };
+
+  exports.deleteUser = async (req, res)=>{
+    const userId = req.params.userId
+    try{
+        const user = await User.findByIdAndDelete(userId);
+        await user.save()
+    }catch(err){
+        console.log(err);
+    }
+  }

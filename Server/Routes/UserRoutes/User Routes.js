@@ -8,6 +8,7 @@ router.get('/getallusers', userController.getAllUsers)
 router.post('/signup', userController.signupController)
 router.post('/login', userController.login)
 router.post('/updateprofile/:userId', updateProfile = multerConfig.single('profilePic'), userController.updateProfile)
+router.post('/deleteuser/:userId', userController.deleteUser)
 
 
 

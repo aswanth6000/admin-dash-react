@@ -24,7 +24,7 @@ const handleLogout = () =>{
 const [name, setName] = useState<string>('')
 const [email, setEmail] = useState<string>('')
 const [date, setDate] = useState<string>('');
-const [profilePic, setProfilePic] = useState('')
+const [profilePic, setProfilePic] = useState('');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const userData: UserData| null = useSelector((state : any) => state.user.user ); 

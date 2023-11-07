@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import axios from '../../axios';
 import { updateProfile } from '../../redux/userSlice';
@@ -22,21 +22,26 @@ export default function AdminUserForm() {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  function useAllUsers() {
-    return useSelector((state: any) => state.admin.allusers);
-  }
-  const allUsers = useAllUsers();
+
+  
 
 
   useEffect(() => {
-    const foundUser = allUsers.find((user: { _id: string | undefined; }) => user._id === userId);
-    if (foundUser) {
-      setUser(foundUser);
-      setName(foundUser.fullname);
-      setEmail(foundUser.email);
-      setPic(foundUser.profilePic);
-    }
-  }, [allUsers, userId]);
+    axios.get('/getallusers')
+      .then((response) => {
+        const allUsers = response.data;
+        const foundUser = allUsers.find((user: { _id: string | undefined; }) => user._id === userId);
+        if (foundUser) {
+          setUser(foundUser);
+          setName(foundUser.fullname);
+          setEmail(foundUser.email);
+          setPic(foundUser.profilePic);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [userId]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -71,11 +76,22 @@ export default function AdminUserForm() {
       setIsLoading(false);
     }
   };
+
+  const handleDelete = async () =>{
+    try{
+      await axios.post(`/deleteuser/${userId}`)
+      navigate('/adminhome')
+    }catch(err){
+      console.log(err);
+      
+    }
+
+  }
   
   return (
     <div>
       <section className="bg-gray-50 dark:bg-gray-900">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-auto lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -131,6 +147,12 @@ export default function AdminUserForm() {
                   className="w-full text-white bg-blue-600 hover-bg-blue-700 focus-ring-4 focus-outline-none focus-ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark-bg-blue-600 dark-hover-bg-blue-700 dark-focus-ring-blue-800"
                 >
                   Update
+                </button>}
+                {isLoading ? '' : <button
+                onClick={handleDelete}
+                  className="w-full text-white bg-red-600 hover-bg-red-700 focus-ring-4 focus-outline-none focus-ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark-bg-red-600 dark-hover-bg-red-700 dark-focus-ring-red-800"
+                >
+                  Delete
                 </button>}
               </form>
             </div>

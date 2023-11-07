@@ -1,20 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { setAdminLogout } from "../../redux/adminSlice";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import axios from "../../axios";
 
 
 export default function AdminDash() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const allUsers = useSelector((state : any) => state.admin.allusers);
-  useEffect(()=>{
-    if(allUsers){
-      console.log('allusers',allUsers);
-    }
+    const [allUsers, setAllUsers] = useState([])
+    useEffect(()=>{
+      axios.get('/getallusers')
+      .then((response)=>{
+        setAllUsers(response.data)
+        if(allUsers){
+          console.log('allusers',allUsers);
+        }
+      })
 
-  })
+  },[])
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
@@ -77,9 +81,6 @@ export default function AdminDash() {
                     Joined
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    Status
-                </th>
-                <th scope="col" className="px-6 py-3">
                     Action
                 </th>
             </tr>
@@ -101,11 +102,6 @@ export default function AdminDash() {
                 </th>
                 <td className="px-6 py-4">
                 {user.createdAt instanceof Date ? user.createdAt.toDateString() : new Date(user.createdAt).toDateString()}
-                </td>
-                <td className="px-6 py-4">
-                    <div className="flex items-center">
-                        <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div> Online
-                    </div>
                 </td>
                 <td className="px-6 py-4">
                   <Link to={`/adminedit/${user._id}`}>  <a href="" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a></Link>

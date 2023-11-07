@@ -37,7 +37,7 @@ export const userSlice = createSlice({
       if (state.user) {
         state.user = {
           ...state.user,
-          ...action.payload[0], // Assuming you are updating the user's own profile
+          ...action.payload,
         };
       }
     },
