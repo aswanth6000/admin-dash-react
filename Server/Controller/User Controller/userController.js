@@ -72,18 +72,36 @@ exports.login = async (req, res)=>{
 }
 }
 
-exports.updateProfile = async (req, res)=>{
-    const userId = req.params.userId;
-    console.log(userId);
-    const updatedData = req.body;
-    const folderName = 'admin-user-react';
-    console.log("ssssssss",updatedData);
-    if (req.file) {
-        const result = await cloudinary.uploader.upload(req.file.path,  { public_id: `${folderName}/${req.file.originalname}`});
+exports.updateProfile = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      console.log(userId);
+      const updatedData = req.body;
+      const folderName = 'admin-user-react';
+      console.log("ssssssss", updatedData);
+  
+      if (req.file) {
+        const result = await cloudinary.uploader.upload(req.file.path, { public_id: `${folderName}/${req.file.originalname}` });
         updatedData.profilePic = result.secure_url;
         console.log(updatedData);
       }
+  
       const user = await User.findByIdAndUpdate(userId, updatedData, { new: true });
-      
       res.json(user);
-}
+    } catch (error) {
+      console.error("An error occurred:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  };
+
+  
+  exports.getAllUsers =  async (req, res) => {
+    try {
+      const users = await User.find();
+  
+      res.json(users);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };

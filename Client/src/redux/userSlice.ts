@@ -1,18 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
-  // Define the structure of a user
-  id: string;
+  id: string; // Change "_id" to "id"
   fullname: string;
   email: string;
-  profilePic : string;
+  profilePic: string;
   // Add other fields as needed
 }
 
 interface UserState {
   user: User | null;
   token: string | null;
-  allusers: User[]; 
+  allusers: User[]; // Rename "allUsers" to "allusers"
 }
 
 const initialState: UserState = {
@@ -33,11 +32,12 @@ export const userSlice = createSlice({
       state.user = null;
       state.token = null;
     },
+
     updateProfile: (state, action: PayloadAction<User[]>) => {
       if (state.user) {
         state.user = {
           ...state.user,
-          ...action.payload,
+          ...action.payload[0], // Assuming you are updating the user's own profile
         };
       }
     },

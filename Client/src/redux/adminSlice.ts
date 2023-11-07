@@ -30,7 +30,7 @@ export const adminSlice = createSlice({
     setAdminLogout : (state)=>{
       state.adminEmail = null;
       state.allusers = [];
-    }
+    },
   },
 });
 

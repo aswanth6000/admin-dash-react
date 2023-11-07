@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdminLogout } from "../../../redux/adminSlice";
+import { setAdminLogout } from "../../redux/adminSlice";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 export default function AdminDash() {
@@ -73,7 +74,7 @@ export default function AdminDash() {
                     Name
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    Position
+                    Joined
                 </th>
                 <th scope="col" className="px-6 py-3">
                     Status
@@ -99,7 +100,7 @@ export default function AdminDash() {
                     </div>  
                 </th>
                 <td className="px-6 py-4">
-                    React Developer
+                {user.createdAt instanceof Date ? user.createdAt.toDateString() : new Date(user.createdAt).toDateString()}
                 </td>
                 <td className="px-6 py-4">
                     <div className="flex items-center">
@@ -107,7 +108,7 @@ export default function AdminDash() {
                     </div>
                 </td>
                 <td className="px-6 py-4">
-                    <a href="" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                  <Link to={`/adminedit/${user._id}`}>  <a href="" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a></Link>
                 </td>
             </tr>
 ))}
