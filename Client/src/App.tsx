@@ -28,12 +28,18 @@ fetchData()
     <>
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Login/>}></Route>
-      <Route path="/signup" element={<Signup/>}></Route>
+      {!user &&<Route path="/" element={<Login/>}></Route>}
+      {!user &&<Route path="/signup" element={<Signup/>}></Route>}
       {admin &&<Route path="/adminhome" element={<AdminDash/>}></Route>}
       {admin &&<Route path="/adminedit/:userId" element={<AdminuserForm/>}></Route>}
-      {user &&<Route path="/userhome" element={ <UserDash/>}></Route>}
-      {user &&<Route path="/userform" element={ <UserForm/>}></Route>}
+      {user ? (
+    <>
+      <Route path="/userhome" element={<UserDash/>} />
+      <Route path="/userform" element={<UserForm/>} />
+    </>
+  ) : (
+    <Route path="/" element={<Login/>} />
+  )}
     </Routes>
     </BrowserRouter>
       
